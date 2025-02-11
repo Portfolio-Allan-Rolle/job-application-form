@@ -23,7 +23,7 @@
     }
   }
   &__item {
-    &.active {
+    &.complete {
       &::after {
         background-color: #0099cc;
       }
