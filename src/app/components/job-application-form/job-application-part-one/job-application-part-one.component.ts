@@ -7,32 +7,18 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+import { FormService } from '../../../services/form.service';
 
 @Component({
   selector: 'app-job-application-part-one',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDatepickerModule,
-    FormsModule,
-  ],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './job-application-part-one.component.html',
   styleUrl: './job-application-part-one.component.scss',
-  providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JobApplicationPartOneComponent {
   private formBuilder = inject(NonNullableFormBuilder);
-
-  civility = '';
-  lastName = '';
-  country = '';
+  formService = inject(FormService);
 
   form = this.formBuilder.group({
     civility: ['', Validators.required],
@@ -81,7 +67,7 @@ export class JobApplicationPartOneComponent {
   }
 
   ngOnInit() {
-    console.log(this.form.controls.passwordForm.controls);
+    console.log(this.form.controls.passwordForm.value);
   }
 
   confirmPasswordValidator(control: AbstractControl): ValidationErrors | null {

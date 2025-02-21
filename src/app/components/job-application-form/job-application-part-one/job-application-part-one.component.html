@@ -13,7 +13,6 @@
         value="male"
         name="civility"
         formControlName="civility"
-        [ngModel]="civility"
       />
     </div>
     <div class="form-field d-inline">
@@ -27,7 +26,7 @@
       />
     </div>
   </div>
-  @if (stepOne["civility"].touched && stepOne["civility"].invalid) {
+  @if (formService.isInvalidAndTouchedOrDirty(stepOne["civility"])) {
     @if (stepOne["civility"].errors?.["required"]) {
       <p class="text-danger">Civility is required !</p>
     }
@@ -39,10 +38,9 @@
       type="text"
       placeholder="Last Name..."
       formControlName="lastName"
-      [ngModel]="lastName"
       class="form-control"
     />
-    @if (stepOne["lastName"].touched && stepOne["lastName"].invalid) {
+    @if (formService.isInvalidAndTouchedOrDirty(stepOne["lastName"])) {
       @if (stepOne["lastName"].errors?.["required"]) {
         <p class="text-danger">Last Name is required !</p>
       }
@@ -58,33 +56,22 @@
       formControlName="firstName"
       class="form-control"
     />
-    @if (stepOne["firstName"].touched && stepOne["firstName"].invalid) {
+    @if (formService.isInvalidAndTouchedOrDirty(stepOne["firstName"])) {
       @if (stepOne["firstName"].errors?.["required"]) {
         <p class="text-danger">First Name is required !</p>
       }
     }
   </div>
-
   <div class="form-group mt-2">
-    <mat-label for="dob">Date of Birth:</mat-label>
-    <div>
-      <mat-datepicker-toggle
-        class="d-none"
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
-      <mat-datepicker #picker class="bg-secondary"></mat-datepicker>
-      <input
-        (click)="picker.open()"
-        id="dob"
-        formControlName="dateOfBirth"
-        placeholder="DD/MM/YEAR"
-        class="form-control"
-        matInput
-        [matDatepicker]="picker"
-      />
-    </div>
-    @if (stepOne["dateOfBirth"].touched && stepOne["dateOfBirth"].invalid) {
+    <label for="dob">Date of Birth:</label>
+    <input
+      id="dob"
+      type="date"
+      placeholder="Date of birth..."
+      formControlName="dateOfBirth"
+      class="form-control"
+    />
+    @if (formService.isInvalidAndTouchedOrDirty(stepOne["dateOfBirth"])) {
       @if (stepOne["dateOfBirth"].errors?.["required"]) {
         <p class="text-danger">Date of birth is required !</p>
       }
@@ -94,13 +81,13 @@
   <div class="form-group mt-2">
     <label for="country">Country:</label>
     <div>
-      <select id="country" [(ngModel)]="country" formControlName="country">
+      <select id="country" formControlName="country">
         <option value="" disabled selected>Select a country</option>
         @for (country of countries; track country) {
           <option [value]="country">{{ country }}</option>
         }
       </select>
-      @if (stepOne["country"].touched && stepOne["country"].invalid) {
+      @if (formService.isInvalidAndTouchedOrDirty(stepOne["country"])) {
         @if (stepOne["country"].errors?.["required"]) {
           <p class="text-danger">Country is required !</p>
         }
@@ -139,8 +126,10 @@
       />
     </div>
     @if (
-      stepOnePasswordForm.passwordConfirmation.touched &&
-      stepOnePasswordForm.passwordConfirmation.invalid
+      formService.isInvalidAndTouchedOrDirty(stepOnePasswordForm.password) &&
+      formService.isInvalidAndTouchedOrDirty(
+        stepOnePasswordForm.passwordConfirmation
+      )
     ) {
       @if (stepOnePasswordForm.passwordConfirmation.errors?.["required"]) {
         <p class="text-danger">Password confirmation is required !</p>

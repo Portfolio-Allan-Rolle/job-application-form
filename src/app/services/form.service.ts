@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormService {
-
-  constructor() { }
+  isInvalidAndTouchedOrDirty(control: AbstractControl) {
+    return control.invalid && (control.touched || control.dirty);
+  }
 }
