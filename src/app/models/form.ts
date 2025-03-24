@@ -1,23 +1,27 @@
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
-export type Form = FormPartOne & FormPartTwo & FormPartThree;
+export type Form = IFormPartOne & IFormPartTwo & IFormPartThree;
 
-export interface FormPartOne {
-  civility: FormControl<string>;
-  lastName: FormControl<string>;
-  firstName: FormControl<string>;
-  dateOfBirth: FormControl<string>;
-  country: FormControl<string>;
-  password: FormControl<string>;
-  passwordConfirmation: FormControl<string>;
+export interface IFormPartOne {
+  civility: string;
+  lastName: string;
+  firstName: string;
+  dateOfBirth: string;
+  country: string;
+  passwordForm: passwordForm;
 }
 
-export interface FormPartTwo {
-  job: FormControl<string>;
-  contract: FormControl<string>;
-  skills: FormControl<string>[];
+interface passwordForm {
+  password: string;
+  passwordConfirmation: string;
 }
 
-export interface FormPartThree {
-  comments: FormControl<string>;
+export interface IFormPartTwo {
+  job: string;
+  contracts: string[];
+  skills: string[];
+}
+
+export interface IFormPartThree {
+  comments: string;
 }
