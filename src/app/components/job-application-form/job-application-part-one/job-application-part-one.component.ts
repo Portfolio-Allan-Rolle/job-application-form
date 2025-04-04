@@ -11,7 +11,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-job-application-part-one',
@@ -28,7 +27,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JobApplicationPartOneComponent {
-  private formBuilder = inject(NonNullableFormBuilder);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
 
   civility = '';
   lastName = '';
