@@ -1,1 +1,295 @@
-<app-job-application-part-one />
+@if (!isFormSubmitted()) {
+  <form [formGroup]="form()" class="form-group w-50 p-4">
+    <div class="form-group">
+      <p class="m-0 text-secondary">Civility:</p>
+      <div class="form-field d-inline me-3">
+        <label for="male" class="me-1">Male</label>
+        <input
+          id="male"
+          type="radio"
+          value="male"
+          name="civility"
+          formControlName="civility"
+        />
+      </div>
+      <div class="form-field d-inline">
+        <label for="female" class="me-1">Female</label>
+        <input
+          id="female"
+          type="radio"
+          value="female"
+          name="civility"
+          formControlName="civility"
+        />
+      </div>
+    </div>
+    @if (formService.isInvalidAndTouchedOrDirty(getFormControl("civility"))) {
+      @if (getFormControl("civility").errors?.["required"]) {
+        <p class="text-danger">Civility is required !</p>
+      }
+    }
+    <div class="form-group mt-2">
+      <label for="lastName" class="text-secondary">Last Name:</label>
+      <input
+        id="lastName"
+        type="text"
+        placeholder="Last Name..."
+        formControlName="lastName"
+        class="form-control"
+      />
+      @if (formService.isInvalidAndTouchedOrDirty(getFormControl("lastName"))) {
+        @if (getFormControl("lastName").errors?.["required"]) {
+          <p class="text-danger">Last Name is required !</p>
+        }
+      }
+    </div>
+
+    <div class="form-group mt-2">
+      <label for="firstName" class="text-secondary">First Name:</label>
+      <input
+        id="firstName"
+        type="text"
+        placeholder="First Name..."
+        formControlName="firstName"
+        class="form-control"
+      />
+      @if (
+        formService.isInvalidAndTouchedOrDirty(getFormControl("firstName"))
+      ) {
+        @if (getFormControl("firstName").errors?.["required"]) {
+          <p class="text-danger">First Name is required !</p>
+        }
+      }
+    </div>
+    <div class="form-group mt-2">
+      <label for="dob" class="text-secondary">Date of Birth:</label>
+      <input
+        id="dob"
+        type="date"
+        placeholder="Date of birth..."
+        formControlName="dateOfBirth"
+        class="form-control"
+      />
+      @if (
+        formService.isInvalidAndTouchedOrDirty(getFormControl("dateOfBirth"))
+      ) {
+        @if (getFormControl("dateOfBirth").errors?.["required"]) {
+          <p class="text-danger">Date of birth is required !</p>
+        }
+      }
+    </div>
+
+    <div class="form-group mt-2">
+      <label for="country" class="text-secondary">Country:</label>
+      <div>
+        <select id="country" formControlName="country">
+          <option value="" disabled selected>Select a country</option>
+          @for (country of countries; track country) {
+            <option [value]="country">{{ country }}</option>
+          }
+        </select>
+        @if (
+          formService.isInvalidAndTouchedOrDirty(getFormControl("country"))
+        ) {
+          @if (getFormControl("country").errors?.["required"]) {
+            <p class="text-danger">Country is required !</p>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="form-group mt-2">
+      <div formGroupName="passwordForm">
+        <div class="form-group mt-2">
+          <label for="mdp" class="text-secondary">Password: </label>
+          <input
+            app
+            id="mdp"
+            type="password"
+            placeholder="Choose a password"
+            class="form-control"
+            formControlName="password"
+          />
+          @if (
+            getFormControl("passwordForm").get("password")?.touched &&
+            getFormControl("passwordForm").get("password")?.invalid
+          ) {
+            @if (
+              getFormControl("passwordForm").get("password")?.errors?.[
+                "required"
+              ]
+            ) {
+              <p class="text-danger">Password is required !</p>
+            }
+          }
+        </div>
+
+        <div class="form-group mt-2">
+          <label for="mdp-confirm" class="text-secondary"
+            >Confirm Password:
+          </label>
+          <input
+            appTrim
+            id="mdp-confirm"
+            type="password"
+            placeholder="Confirm a password"
+            class="form-control"
+            formControlName="passwordConfirmation"
+          />
+        </div>
+        @if (
+          formService.isInvalidAndTouchedOrDirty(
+            getPasswordFormControl("password")
+          ) &&
+          formService.isInvalidAndTouchedOrDirty(
+            getPasswordFormControl("passwordConfirmation")
+          )
+        ) {
+          @if (
+            getPasswordFormControl("passwordConfirmation").errors?.["required"]
+          ) {
+            <p class="text-danger">Password confirmation is required !</p>
+          }
+        }
+        @if (getFormControl("passwordForm").errors) {
+          @if (getFormControl("passwordForm").errors?.["PasswordNoMatch"]) {
+            <p class="text-danger">Passwords do not match !</p>
+          }
+        }
+      </div>
+    </div>
+    <div class="form-group mt-2">
+      <label for="job-title" class="text-secondary">Job Title: </label>
+      <input
+        id="job-title"
+        type="text"
+        placeholder="Your job title"
+        class="form-control"
+        formControlName="job"
+      />
+      @if (formService.isInvalidAndTouchedOrDirty(getFormControl("job"))) {
+        @if (getFormControl("job").errors?.["required"]) {
+          <p class="text-danger">Job title is required !</p>
+        }
+      }
+    </div>
+    <div class="form-group mt-2">
+      <label class="text-secondary">Contract:</label>
+      @for (contract of contractsTypes; track contract) {
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="{{ contract }}"
+            id="{{ contract }}"
+            (change)="onSelectingContract($event)"
+          />
+          <label class="form-check-label" for="{{ contract }}">
+            {{ contract }}
+          </label>
+        </div>
+      }
+      @if (
+        formService.isInvalidAndTouchedOrDirty(getFormControl("contracts"))
+      ) {
+        @if (getFormControl("contracts").errors?.["required"]) {
+          <p class="text-danger">At least one contract type is required !</p>
+        }
+      }
+    </div>
+    <div class="form-group mt-2">
+      <label class="text-secondary">Skills (5 max):</label>
+      <div class="input-group mb-3">
+        <input
+          appTrim
+          appStopPropagation
+          type="text"
+          class="form-control"
+          placeholder="Enter a skill"
+          aria-label="Enter a skill"
+          (keyup.enter)="onAddSkill()"
+          [(ngModel)]="skill"
+          [ngModelOptions]="{ standalone: true }"
+        />
+        <div class="input-group-append">
+          <button
+            (click)="onAddSkill()"
+            class="btn btn-outline-secondary"
+            type="button"
+            [disabled]="skillMaximum()"
+          >
+            Button
+          </button>
+        </div>
+      </div>
+      <div formArrayName="skills">
+        @for (skill of skills.controls; track $index) {
+          <div [formGroupName]="$index">
+            <div class="mb-1">
+              <label class="me-2"> {{ skills.at($index).value }}</label>
+              <button
+                type="button"
+                class="bg-danger border-0 rounded-circle text-white"
+                aria-label="Close"
+                (click)="onRemoveSkill(skills.at($index).value)"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+      @if (formService.isInvalidAndTouchedOrDirty(getFormControl("skills"))) {
+        @if (getFormControl("skills").errors?.["required"]) {
+          <p class="text-danger">At least one skill is required !</p>
+        }
+      }
+    </div>
+    <div class="form-group mt-2">
+      <div class="mb-3">
+        <label for="comments" class="form-label text-secondary"
+          >Comments:</label
+        >
+        <textarea
+          class="form-control"
+          id="comments"
+          rows="3"
+          formControlName="comments"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="form-group mt-2">
+      <button class="btn btn-primary" type="button" (click)="onFormSubmit()">
+        Submit
+      </button>
+    </div>
+  </form>
+}
+
+@if (isFormSubmitted()) {
+  @let formData = this.form().value;
+  <p>Civility: {{ formData.civility }}</p>
+  <p>Last Name: {{ formData.lastName }}</p>
+  <p>First Name: {{ formData.firstName }}</p>
+  <p>Date of Birth: {{ formData.dateOfBirth }}</p>
+  <p>Country: {{ formData.country }}</p>
+  <p>Password: {{ formData.passwordForm.password }}</p>
+  <p>Job Title: {{ formData.job }}</p>
+  <p>Contracts:</p>
+  <ul>
+    @for (contract of formData.contracts; track contract) {
+      <li>{{ contract }}</li>
+    }
+  </ul>
+  <p>Skills:</p>
+  <ul>
+    @for (skill of formData.skills; track skill) {
+      <li>{{ skill }}</li>
+    }
+  </ul>
+  <p>Comments: {{ formData.comments }}</p>
+  <button class="btn btn-primary mt-2" type="button" (click)="resetForm()">
+    Back to form
+  </button>
+}
